@@ -1,0 +1,10 @@
+    <head>
+        <title>{{ siteName }} - {{ pageName }}</title>
+    {% for script in scripts %}
+        <script type="{{ script.type }}" src="{{script.url}}"></script>
+    {% endfor %}
+    {% for style in styles %}
+        <link {% if script.rel is defined %}rel={{style.rel}}{% else %}rel="stylesheet"{%endif%} href="{{style.url}}" type="text/css" {% if style.media is defined %} media="{{style.media}}" {% endif %} />
+    {%endfor%}
+
+</head>

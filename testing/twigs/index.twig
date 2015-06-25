@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.twig' %}
+    <body>
+    {% include 'topHeader.twig' %}
+        {#<div class="content">
+            {% for div in divs %}
+                <div {%if div.id is defined %}id="{{div.id}}"{%endif%} {% if div.class is defined %}class="{{div.class}}"{%endif%}></div>
+            {% endfor %}
+        </div>#}
+        <div class="content">
+            <div id="chart_div_mpg" class="chart"></div>
+            <div id="chart_div_price" class="chart"></div>
+            <div id="table_div" class="chart"></div>
+        </div>
+    </body>
+</html>

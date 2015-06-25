@@ -1,0 +1,9 @@
+lib/jpgraph*
+lib/globals.php
+twigCache
+vendor
+
+.idea/workspace.xml
+
+*.swp
+*~

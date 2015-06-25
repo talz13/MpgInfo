@@ -1,0 +1,10 @@
+{
+    "name": "talz13/mpginfo",
+    "description": "mpginfo dependencies",
+    "license": "proprietary",
+    "require": {
+        "twig/twig": "1.*",
+        "joshtronic/php-googleplaces": "dev-master",
+	    "jpgraph/jpgraph": "dev-master"
+    }
+}

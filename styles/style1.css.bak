@@ -1,0 +1,61 @@
+body
+{
+	background-color: #1b79c8;
+	font-family: Sans-Serif,Helvetica,Arial;
+	/*text-align: center;*/
+}
+div.outerContainer
+{
+	width: 750px;
+	/*background-color: #e5eaef; */
+	background-color: #ffffff;
+	margin-left: auto;
+	margin-right: auto;
+}
+.graphContainer
+{
+	width: 100%;
+	float: none;
+}
+.columnTitle
+{
+	font-family: Sans-Serif;
+	font-weight: bold;
+	text-align: center;
+}
+.leftCol
+{
+	float: left;
+}
+.rightCol
+{
+	float: left;
+}
+.graph
+{
+	text-align: center;
+}
+.clear
+{
+	clear: both;
+}
+p
+{
+	font-family: Sans-Serif,Helvetica,Arial;
+	width: 100%;
+	text-align: left;
+}
+h1
+{
+	font-family: Serif;
+	text-align: center;
+}
+table
+{
+	font-family: Sans-Serif,Helvetica,Arial;
+	font-size: 12pt;
+}
+div.centered
+{
+	text-align: center;
+}

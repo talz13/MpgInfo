@@ -1,0 +1,13 @@
+{#Spacing works out correctly in HTML source code view#}
+<div class="title">
+        <h1>{{ siteName }}</h1>
+    {% if nav is defined %}
+        <div class="nav">
+            <ul id="navList">
+        {% for item in nav.items %}
+            <li>{% if item.id == pageId %}<b>{% endif %}<a href="{{ item.href }}">{{ item.caption }}</a>{% if item.id == pageId %}</b>{% endif %}</li>
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+{% endif %}

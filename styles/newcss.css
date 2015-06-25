@@ -1,0 +1,67 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 21, 2015, 8:12:43 AM
+    Author     : Jeff
+*/
+
+body
+{
+    /*background-color: #1b79c8;*/
+    background-color: #80dcfe;
+    font-family: Sans-Serif,Helvetica,Arial;
+}
+.footer {
+    text-align: center;
+}
+.footer ul {
+    padding: 0;
+    display: inline-block;
+}
+.footer li {
+    display: inline-block;
+    margin-right: 0.5em;
+}
+.footer li:last-child {
+    margin-right: 0;
+}
+.outerContainer {
+    background-color: #ffffff;
+    text-align: center;
+    
+    border: 2px solid;
+    border-radius: 5px;
+    /*border-color: #80dcfe;*/
+    border-color: #ffffff;
+    box-shadow: 5px 5px 5px #888888;
+}
+.columnTitle {
+    /*font-family: Sans-Serif;*/
+    font-weight: bold;
+    text-align: center;
+}
+.graph {
+    text-align: center;
+}
+.clear {
+    clear: both;
+}
+p {
+    /*font-family: Sans-Serif,Helvetica,Arial;*/
+    text-align: left;
+}
+h1 {
+    /*font-family: Serif;*/
+    text-align: center;
+}
+table {
+    /*font-family: Sans-Serif,Helvetica,Arial;*/
+    font-size: 1em;
+    margin: 0 auto;
+}
+input {
+    font-size: 1em;
+}

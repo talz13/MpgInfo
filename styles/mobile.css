@@ -1,0 +1,74 @@
+html
+{
+	font-family: Sans-Serif,Helvetica,Arial;
+}
+body
+{
+	background-color: #1b79c8;
+	/*font-family: Sans-Serif,Helvetica,Arial;*/
+	font-size: 36pt;
+	/*text-align: center;*/
+}
+p
+{
+	/*font-family: Sans-Serif,Helvetica,Arial;*/
+	font-size: 36pt;
+	/* width: 100%; */
+	text-align: left;
+}
+h1
+{
+	/*font-family: Sans-Serif,Helvetica,Arial;*/
+	font-size: 40pt;
+	text-align: center;
+}
+h2
+{
+	/*font-family: Sans-Serif,Helvetica,Arial;*/
+	font-size: 38pt;
+}
+div.outerContainer
+{
+	/* width: 384px;*/
+	/* width: 100%; */
+	/*background-color: #e5eaef; */
+	background-color: #ffffff;
+	/* margin-left: auto; */
+	/* margin-right: auto; */
+}
+.graphContainer
+{
+	/* width: 100%; */
+	float: none;
+}
+.columnTitle
+{
+	font-family: Sans-Serif;
+	font-weight: bold;
+	text-align: center;
+}
+.leftCol
+{
+	float: left;
+}
+.rightCol
+{
+	float: left;
+}
+.graph
+{
+	text-align: center;
+}
+.clear
+{
+	clear: both;
+}
+table
+{
+	font-family: Sans-Serif,Helvetica,Arial;
+	font-size: 32pt;
+}
+div.centered
+{
+	text-align: center;
+}
