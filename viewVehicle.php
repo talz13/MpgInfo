@@ -23,7 +23,7 @@ if (array_key_exists('vehicle_id', $_POST) and isset($_POST['vehicle_id'])) {
 $query_data = "select concat(v.model_year,' ', v.make, ' ', v.model) as carName,
                       sum(m.miles) as miles,
                       sum(m.gallons) as gallons,
-                      sum(m.totalPrice) as price,
+                      sum(m.gallons * m.priceGallon) as price,
                       min(m.date) as startDate,
                       max(m.date) as endDate,
                       count(*) as count

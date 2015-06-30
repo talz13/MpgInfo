@@ -54,7 +54,7 @@ function getData($dataToRetrieve, $debug) {
 function getAllData() {
 //    $mysqli = getConn();
     $db = new MpgDb();
-    $query = "select date, miles, gallons, mpg, priceGallon, totalPrice, comment from mileage order by date asc";
+    $query = "select date, miles, gallons, (miles / gallons) as mpg, priceGallon, (gallons * priceGallon) as totalPrice, comment from mileage order by date asc";
     $db->runQuery($query);
 
     $data = ['cols' => [['id' => strval(0),
