@@ -1,7 +1,7 @@
 <?php
-include "../lib/globals.php";
-include "../lib/header.php";
-include "../lib/funcs.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 
 if (checkLogin())
 {
@@ -13,6 +13,4 @@ if (checkLogin())
 	mysql_select_db($db, $con);
 
 }
-include "../lib/footer.php";
-?>
-
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';

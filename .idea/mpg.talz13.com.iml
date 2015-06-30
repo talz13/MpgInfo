@@ -3,7 +3,6 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/joshtronic/php-googleplaces" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jpgraph/jpgraph" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
     </content>
@@ -23,15 +22,13 @@
       <library name="PHP">
         <CLASSES>
           <root url="file://$MODULE_DIR$/vendor/composer" />
-          <root url="file://$MODULE_DIR$/vendor/jpgraph/jpgraph" />
           <root url="file://$MODULE_DIR$/vendor/twig/twig" />
-          <root url="file://$MODULE_DIR$/vendor/joshtronic/php-googleplaces" />
+          <root url="file://$MODULE_DIR$/vendor/jpgraph/jpgraph" />
         </CLASSES>
         <SOURCES>
           <root url="file://$MODULE_DIR$/vendor/composer" />
-          <root url="file://$MODULE_DIR$/vendor/jpgraph/jpgraph" />
           <root url="file://$MODULE_DIR$/vendor/twig/twig" />
-          <root url="file://$MODULE_DIR$/vendor/joshtronic/php-googleplaces" />
+          <root url="file://$MODULE_DIR$/vendor/jpgraph/jpgraph" />
         </SOURCES>
       </library>
     </orderEntry>

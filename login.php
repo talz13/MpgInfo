@@ -1,25 +1,22 @@
 <?php
 
-include $_SERVER["DOCUMENT_ROOT"] . "/lib/globals.php";
-include $_SERVER["DOCUMENT_ROOT"] . "/lib/funcs.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
+
+$body = '';
 
 if (array_key_exists('username', $_POST) && array_key_exists('password', $_POST)) {
-    $con = mysql_connect($dbHost, $dbUser, $dbPass);
-    if (!$con) {
-        die('Could not connect: ' . mysql_error());
-    }
-    mysql_select_db($db, $con);
-
     if (count($_POST['username']) > 0 && count($_POST['username']) < 50 && count($_POST['password']) > 0 && count($_POST['password']) <= 16) {
-        $username = mysql_real_escape_string($_POST['username']);
-        $password = mysql_real_escape_string($_POST['password']);
+        $db = new MpgDb();
+        $username = $db->escapeString($_POST['username']);
+        $password = $db->escapeString($_POST['password']);
         $passwordHashed = sha1($username . $password);
-        $sql = "select password from users where username='$username'";
+        $sql = sprintf("select password from users where username='%s'", $username);
         //$sql = "insert into users(username, password, lastLoginDT, joinDT) values ('$username', '$passwordHashed', NOW(), NOW())";
-        $result = mysql_query($sql);
+        $db->runQuery($sql);
 
-        if (mysql_num_rows($result) > 0) {
-            $row = mysql_fetch_assoc($result);
+        if ($db->getRowCount() == 1) {
+            $row = $db->getRow();
             if ($passwordHashed == $row['password']) {
                 // Make login cookie!
                 $time = time();
@@ -36,29 +33,22 @@ if (array_key_exists('username', $_POST) && array_key_exists('password', $_POST)
     //echo '<META HTTP_EQUIV="Refresh" CONTENT="5; URL="login.php?redirect='.$_POST['previous'].'">';
     header("Location: login.php?redirect=" . $_POST['redirect']);
 
-    include $_SERVER["DOCUMENT_ROOT"] . "/lib/header.php";
-    echo '<META HTTP_EQUIV="Refresh" CONTENT="5; URL=login.php?redirect=' . $_POST['redirect'] . '">';
-    echo '<p>Please wait while you are logged in...</p>';
-    include $_SERVER["DOCUMENT_ROOT"] . "/lib/footer.php";
+    $body .= sprintf('<META HTTP_EQUIV="Refresh" CONTENT="5; URL=login.php?redirect=%s">', $_POST['redirect']);
+    $body .= '<p>Please wait while you are logged in...</p>';
 } else {
     if (checkLogin()) {
-        include $_SERVER["DOCUMENT_ROOT"] . "/lib/header.php";
-        echo '<META HTTP-EQUIV="Refresh" CONTENT="5; URL=' . $_GET['redirect'] . '">';
-        echo '<p>Redirecting you to your previous page...</p>';
-
-        //if (array_key_exists('previous', $_GET))
-        //	header("Location: ".$_GET['previous']);
-        //else
-        //	header("Location: /");
+        $body .= sprintf('<META HTTP-EQUIV="Refresh" CONTENT="5; URL=%s">', $_GET['redirect']);
+        $body .= '<p>Redirecting you to your previous page...</p>';
     } else {
-        include $_SERVER["DOCUMENT_ROOT"] . "/lib/header.php";
-        echo '<form action="login.php" method="post">';
-        echo '	<input type="hidden" name="redirect" value="' . $_GET['redirect'] . '">';
-        echo '	Username: <input type="text" name="username">';
-        echo '	Password: <input type="password" name="password">';
-        echo '	<input type="submit" value="Log In">';
-        echo '</form>';
+        $body .= '<form action="login.php" method="post">';
+        $body .= sprintf('	<input type="hidden" name="redirect" value="%s">', $_GET['redirect']);
+        $body .= '	Username: <input type="text" name="username">';
+        $body .= '	Password: <input type="password" name="password">';
+        $body .= '	<input type="submit" value="Log In">';
+        $body .= '</form>';
     }
-    include $_SERVER["DOCUMENT_ROOT"] . "/lib/footer.php";
 }
-?>
+
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
+echo $body;
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';

@@ -3,7 +3,7 @@ ob_start();
 
 $siteRoot = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT');
 $testRoot = '/testing';
-require_once sprintf('%s%s', $siteRoot, '/vendor/autoload.php');
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 $loader = new Twig_Loader_Filesystem('twigs');
 //$twig = new Twig_Environment($loader, ['cache' => 'twigCache']);

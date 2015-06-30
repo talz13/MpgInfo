@@ -1,10 +1,10 @@
 <?php
-include $_SERVER["DOCUMENT_ROOT"] . "/lib/globals.php";
-include $_SERVER["DOCUMENT_ROOT"] . "/lib/header.php";
+require_once 'lib/globals.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 ?>
-    <h1>Car Info</h1>
-    <a href="graphs/mpg.php" class=""><img src="graphs/mpg.php?sizex=320&amp;sizey=240" width="320" height="240" alt="MPG"></a>
-    <a href="graphs/price.php"><img src="graphs/price.php?sizex=320&amp;sizey=240" width="320" height="240" alt="Price per gallon"></a>
+    <h1><?=Config::getSiteName()?></h1>
+    <a href="graphs/graphQuery.php?graph=mpg"><?=sprintf('<img src="graphs/graphQuery.php?graph=mpg&sizex=%1$d&amp;sizey=%2$d" width="%1$d" height="%2$d" alt="MPG">', Config::getXThumb(), Config::getYThumb())?></a>
+    <a href="graphs/graphQuery.php?graph=price"><?=sprintf('<img src="graphs/graphQuery.php?graph=price&sizex=%1$d&amp;sizey=%2$d" width="%1$d" height="%2$d" alt="Price per gallon">', Config::getXThumb(), Config::getYThumb())?></a>
 <?php
-include $_SERVER["DOCUMENT_ROOT"] . "/lib/footer.php";
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
 ?>

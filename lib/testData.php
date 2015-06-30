@@ -1,13 +1,9 @@
 <?php
-include "globals.php";
-//$dbh = new PDO("mysql:host=$dbHost;dbname=$db",$dbUser,$dbPass);
-//foreach ($dbh->query('select * from mileage') as $row) {
-//    print_r($row);
-//}
-$siteRoot = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT');
-require sprintf('%s%s', $siteRoot, '/vendor/autoload.php');
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MpgDb.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
 
-include "../lib/funcs.php";
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 $g = filter_input(INPUT_POST, 'g');
 if (!isset($g)) {
@@ -24,9 +20,7 @@ if (!isset($debug)) {
     $debug = filter_input(INPUT_GET, 'debug');
 }
 
-if (isset($cols)) {
-    getCols($cols, $debug);
-} else if (isset($g)) {
+if (isset($g)) {
     getData($g, $debug);
 }
 
@@ -58,9 +52,10 @@ function getData($dataToRetrieve, $debug) {
 }
 
 function getAllData() {
-    $mysqli = getConn();
+//    $mysqli = getConn();
+    $db = new MpgDb();
     $query = "select date, miles, gallons, mpg, priceGallon, totalPrice, comment from mileage order by date asc";
-    $result = $mysqli->query($mysqli->real_escape_string($query));
+    $db->runQuery($query);
 
     $data = ['cols' => [['id' => strval(0),
         'label' => 'Date',
@@ -93,7 +88,7 @@ function getAllData() {
         ],
         'rows' => []
     ];
-    while ($row = $result->fetch_object()) {
+    while ($row = $db->getRow()) {
         $data['rows'][] = ['c' => [
                 ['v' => strtotime($row->date) * 1000, 'f' => $row->date],
                 ['v' => $row->miles],
@@ -105,90 +100,3 @@ function getAllData() {
     }
     return $data;
 }
-
-//function getMpgData() {
-//    $mysqli = getConn();
-//    $query = "select date, mpg, priceGallon from mileage order by date asc";
-//    $result = $mysqli->query($mysqli->real_escape_string($query));
-//
-//    $data = array('cols' => array(
-//            array(
-//                'id' => strval(0),
-//                'label' => 'Date',
-//                'type' => 'string'
-//            ),
-//            array(
-//                'id' => strval(1),
-//                'label' => 'MPG',
-//                'type' => 'number'
-//            )
-//        ),
-//        'rows' => array()
-//    );
-//    while ($row = $result->fetch_object()) {
-//        $data['rows'][] = array('c' => array(
-//                array('v' => $row->date),
-//                array('v' => $row->mpg)));
-//    }
-//    return $data;
-//}
-//function getPriceData() {
-//    $mysqli = getConn();
-//    $query = "select date, priceGallon from mileage order by date asc";
-//    $result = $mysqli->query($mysqli->real_escape_string($query));
-//
-//    $data = array('cols' => array(
-//            array(
-//                'id' => strval(0),
-//                'label' => 'Date',
-//                'type' => 'string'
-//            //'type' => 'datetime'
-//            ),
-//            array(
-//                'id' => strval(1),
-//                'label' => '$/Gallon',
-//                'type' => 'number'
-//            )
-//        ),
-//        'rows' => array()
-//    );
-//    while ($row = $result->fetch_object()) {
-//        $data['rows'][] = array('c' => array(
-//                array('v' => $row->date),
-//                array('v' => $row->priceGallon, 'f' => sprintf("$%01.3f", $row->priceGallon))));
-//    }
-//    return $data;
-//}
-//function getBothData() {
-//    $mysqli = getConn();
-//    $query = "select unix_timestamp(date) * 1000 as date, mpg, priceGallon from mileage order by date asc";
-//    $result = $mysqli->query($mysqli->real_escape_string($query));
-//
-//    $data = array('cols' => array(
-//            array(
-//                'id' => strval(0),
-//                'label' => 'Date',
-//                //'type' => 'string'
-//                'type' => 'number'
-//            ),
-//            array(
-//                'id' => strval(1),
-//                'label' => 'MPG',
-//                'type' => 'number'
-//            ),
-//            array(
-//                'id' => strval(2),
-//                'label' => '$/Gallon',
-//                'type' => 'number'
-//            )
-//        ),
-//        'rows' => array()
-//    );
-//    while ($row = $result->fetch_object()) {
-//        $data['rows'][] = array('c' => array(
-//                array('v' => $row->date),
-//                array('v' => $row->mpg),
-//                array('v' => $row->priceGallon, 'f' => sprintf("$%01.3f", $row->priceGallon))));
-//    }
-//    return $data;
-//}

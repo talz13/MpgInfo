@@ -1,6 +1,6 @@
 <?php
-include $_SERVER["DOCUMENT_ROOT"]."/lib/globals.php";
-include $_SERVER["DOCUMENT_ROOT"]."/lib/header.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 
 if (array_key_exists('submit', $_POST))
 {
@@ -100,7 +100,7 @@ if (!array_key_exists('submit', $_POST))
 				</tr>
 			</table>
 		</form>
-<?
+<?php
 }
-include $_SERVER["DOCUMENT_ROOT"]."/lib/footer.php";
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
 ?>

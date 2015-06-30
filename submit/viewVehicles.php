@@ -1,4 +1,3 @@
 <?php
-include 
+//include
 // This is a placeholder file
-?>

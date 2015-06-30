@@ -1,17 +1,10 @@
 <?php
-include $_SERVER["DOCUMENT_ROOT"]."/lib/globals.php";
-include $_SERVER["DOCUMENT_ROOT"]."/lib/header.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MpgDb.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 				  
 if (array_key_exists('submit', $_POST))
 {
-	$con = mysql_connect($dbHost, $dbUser, $dbPass);
-	if (!$con)
-	  {
-	  die('Could not connect: ' . mysql_error());
-	  }
-	
-	mysql_select_db($db, $con);
-
 	$model_year = $make = $model = $trim = $color = $date_purchased = $date_sold = $mileage_current = $mileage_purchased = $mileage_sold = $price_purchased = $price_sold = $vehicle_index = $updateDS = $createDS = 0;
 	
 	$i = 0;
@@ -19,7 +12,6 @@ if (array_key_exists('submit', $_POST))
 	$getArray = array_unique($_GET);
 	foreach ($getArray as $value)
 	{
-		//echo "<br>value: ".$value;
 		echo "<br>";
 		echo "value: ".$value;
 		$tempArray = explode(',', $value);
@@ -32,19 +24,20 @@ if (array_key_exists('submit', $_POST))
 		//array_push($inputArray, $tempArray);
 		$i++;
 	}
+    $db = new MpgDb();
 
-	$model_year = $_POST['model_year'];
-	$make = $_POST['make'];
-	$model = $_POST['model'];
-	$trim = $_POST['trim'];
-	$color= $_POST['color'];
-	$month_purchased = $_POST['month_purchased'];
-	$day_purchased = $_POST['day_purchased'];
-	$year_purchased = $_POST['year_purchased'];
-	//$date_purchased = $_POST['date_purchased'];
-	$mileage_current = $_POST['mileage_current'];
-	$mileage_purchased = $_POST['mileage_purchased'];
-	$price_purchased = $_POST['price_purchased'];
+	$model_year = $db->escapeString($_POST['model_year']);
+	$make = $db->escapeString($_POST['make']);
+	$model = $db->escapeString($_POST['model']);
+	$trim = $db->escapeString($_POST['trim']);
+	$color= $db->escapeString($_POST['color']);
+	$month_purchased = $db->escapeString($_POST['month_purchased']);
+	$day_purchased = $db->escapeString($_POST['day_purchased']);
+	$year_purchased = $db->escapeString($_POST['year_purchased']);
+	//$date_purchased = $db->escapeString($_POST['date_purchased']);
+	$mileage_current = $db->escapeString($_POST['mileage_current']);
+	$mileage_purchased = $db->escapeString($_POST['mileage_purchased']);
+	$price_purchased = $db->escapeString($_POST['price_purchased']);
 	
 	
 	$updateQueryString = "update vehicles set model_year=$model_year, make='$make', model='$model', trim='$trim', color='$color', date_purchased='$year_purchased-$month_purchased-$day_purchased', mileage_current=$mileage_current, mileage_purchased=$mileage_purchased, price_purchased=$price_purchased, updateDS=NOW() where vehicle_index=$vehicle_index and username='$username'";
@@ -100,7 +93,7 @@ if (!array_key_exists('submit', $_POST))
 				</tr>
 			</table>
 		</form>
-<?
+<?php
 }
-include $_SERVER["DOCUMENT_ROOT"]."/lib/footer.php";
+include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
 ?>
