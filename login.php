@@ -12,7 +12,7 @@ if (array_key_exists('username', $_POST) && array_key_exists('password', $_POST)
         $password = $db->escapeString($_POST['password']);
         $passwordHashed = sha1($username . $password);
         $sql = sprintf("select password from users where username='%s'", $username);
-        //$sql = "insert into users(username, password, lastLoginDT, joinDT) values ('$username', '$passwordHashed', NOW(), NOW())";
+        //$sql = "insert into users(username, password) values ('$username', '$passwordHashed')";
         $db->runQuery($sql);
 
         if ($db->getRowCount() == 1) {
