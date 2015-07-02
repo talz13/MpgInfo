@@ -18,6 +18,8 @@ class Config
 
     private static $currencyFormatStr = '$%01.2f';
 
+    private static $baseUrl = '';
+
     /**
      * @return string
      */
@@ -120,5 +122,13 @@ class Config
     public static function getGraphBackgroundColors()
     {
         return self::$graphBackgroundColors;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getBaseUrl()
+    {
+        return self::$baseUrl;
     }
 }
