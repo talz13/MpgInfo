@@ -7,7 +7,7 @@
  */
 
 class MpgDb {
-    /** @var mysqli $result **/
+    /** @var mysqli $connection **/
     private $connection;
     /** @var mysqli_result $result **/
     private $result;
@@ -23,8 +23,7 @@ class MpgDb {
     private function getConn()
     {
         $mysqli = new mysqli(Config::getDbHost(), Config::getDbUser(), Config::getDbPass(), Config::getDb());
-        if (mysqli_connect_errno())
-        {
+        if (mysqli_connect_errno()) {
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
         }
@@ -36,7 +35,6 @@ class MpgDb {
         if (strlen($this->connection->error) > 0) {
             printf('Error running query: %s', $this->connection->error);
         }
-        return $this->result->num_rows;
     }
 
     public function runInsertQuery($query) {

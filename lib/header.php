@@ -2,9 +2,7 @@
 //ob_start('ob_tidyhandler');
 //ob_start("ob_tidyhandler");
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
-//function displayHeader($scripts, $styles) {
-//
+startMpgSession();
 $css = buildLocalPath('/styles/newcss.css');
 
 ?>

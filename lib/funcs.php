@@ -9,8 +9,7 @@ $minSizeY = 75;
 $defaultX = 800;
 $defaultY = 600;
 
-function getImgSize($inputArray)
-{
+function getImgSize($inputArray) {
 	$xSize = $GLOBALS['defaultX'];
 	$ySize = $GLOBALS['defaultY'];
 	$fontRatio = $xSize / $GLOBALS['defaultX'];
@@ -27,55 +26,28 @@ function getImgSize($inputArray)
     return array($xSize, $ySize, $fontRatio);
 }
 
-function checkLogin()
-{
-	if (isset($_COOKIE['login']))
-	{
-		$loginArray = unserialize($_COOKIE['login']);
-        $db = new MpgDb();
-		$query = sprintf("select password from users where username='%s'", $loginArray[0]);
-		$result = $db->runQuery($query);
-		if ($db->getRowCount() > 0)
-		{
-			$row = $db->getRow();
-			//foreach($loginArray as $item)
-			//{
-			//	echo "<br>Item: ".$item;
-			//}
-			if ($loginArray[1] == $row['password'])
-			{
-				//echo "<br>return true 1";
-				return true;
-			}
-			else
-			{
-				//echo "<br>return false 1";
-				return false;
-			}
-		}
-		else
-		{
-			//echo "<br>return false 2";
-			return false;
-		}
-	}
-	else
-	{
-		//echo "<br>return false 3";
-		return false;
+function checkLogin() {
+    return isset($_SESSION['userId']) ? true : false;
+}
+
+function displayLoginLink() {
+    printf('<table><tr><td><h2>Please <a href="%s">log in</a></h2></td></tr></table>', buildLocalPath('/login.php'));
+}
+
+function getUserId() {
+	if (isset($_SESSION['userId']))	{
+        return $_SESSION['userId'];
+	} else {
+		return -1;
 	}
 }
-function getUsernameFromCookie()
-{
-	if (isset($_COOKIE['login']))
-	{
-		$loginArray = unserialize($_COOKIE['login']);
-		return $loginArray[0];
-	}
-	else
-	{
-		return "";
-	}
+
+function setUserId($id) {
+    $_SESSION['userId'] = $id;
+}
+
+function filterPost($key) {
+
 }
 
 function buildLocalPath($rootRelativePath) {
@@ -89,4 +61,10 @@ function buildLocalPath($rootRelativePath) {
         $protocol = 'http';
     }
     return sprintf('%s://%s%s', $protocol, Config::getBaseUrl(), $rootRelativePath);
+}
+
+function startMpgSession() {
+    if (!isset($_SESSION)) {
+        session_start();
+    }
 }

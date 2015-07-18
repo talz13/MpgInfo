@@ -1,5 +1,8 @@
 <?php
-require_once 'lib/globals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+
+startMpgSession();
+
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 ?>
     <h1><?=Config::getSiteName()?></h1>

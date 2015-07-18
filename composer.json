@@ -5,7 +5,6 @@
     "require": {
         "twig/twig": "1.*",
 	    "jpgraph/jpgraph": "dev-master",
-        "doctrine/orm": "2.6.x-dev",
-        "symfony/yaml": "2.8.x-dev"
+        "j4mie/paris": "v1.5.4"
     }
 }

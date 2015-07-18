@@ -1,6 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MpgDb.php';
+
+startMpgSession();
+
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 				  
 if (array_key_exists('submit', $_POST))
@@ -34,31 +37,31 @@ if (array_key_exists('submit', $_POST))
 	$month_purchased = $db->escapeString($_POST['month_purchased']);
 	$day_purchased = $db->escapeString($_POST['day_purchased']);
 	$year_purchased = $db->escapeString($_POST['year_purchased']);
-	//$date_purchased = $db->escapeString($_POST['date_purchased']);
 	$mileage_current = $db->escapeString($_POST['mileage_current']);
 	$mileage_purchased = $db->escapeString($_POST['mileage_purchased']);
 	$price_purchased = $db->escapeString($_POST['price_purchased']);
+    $userId = $db->escapeString($_COOKIE[0]);
 	
 	
-	$updateQueryString = "update vehicles set model_year=$model_year, make='$make', model='$model', trim='$trim', color='$color', date_purchased='$year_purchased-$month_purchased-$day_purchased', mileage_current=$mileage_current, mileage_purchased=$mileage_purchased, price_purchased=$price_purchased, updateDS=NOW() where vehicle_index=$vehicle_index and username='$username'";
+	$updateQueryString = "update vehicles set modelYear=$model_year,
+                                              make='$make',
+                                              model='$model',
+                                              trim='$trim',
+                                              color='$color',
+                                              datePurchased='$year_purchased-$month_purchased-$day_purchased',
+                                              currentMiles=$mileage_current,
+                                              originalMiles=$mileage_purchased,
+                                              purchasePrice=$price_purchased
+                          where vehicleId=$vehicle_index
+                            and userId = ";
 	echo "<br>" . $updateQueryString;
 	mysql_query($updateQueryString);
 	mysql_query("COMMIT");
 	
 	mysql_close($con);
-}
-	
-function getDateFromInput($input)
-{
-	$explodedString = explode('/',$input);
-	$dbDate = $explodedString[2] . "-" . $explodedString[0] . "-" . $explodedString[1];
-	return $dbDate;
-}
-
-if (!array_key_exists('submit', $_POST))
-{
+} else {
 ?>
-		<form name="submitVehicle" action="addVehicle.php" method="POST">
+		<form name="submitVehicle" action="editVehicle.php" method="POST">
 			<input type="hidden" name="submit" value="true">
 			<table border='1'>
 				<tr>

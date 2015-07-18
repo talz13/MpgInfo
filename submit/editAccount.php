@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
+
+startMpgSession();
+
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 
 if (checkLogin())

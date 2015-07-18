@@ -1,0 +1,15 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: jeff
+ * Date: 7/13/2015
+ * Time: 1:21 PM
+ */
+
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+
+class RefuelingSum extends Model {
+    public function vehicle() {
+        return $this->belongs_to('Vehicle');
+    }
+}

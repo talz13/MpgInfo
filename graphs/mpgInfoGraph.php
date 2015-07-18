@@ -6,10 +6,8 @@
  * Time: 3:54 PM
  */
 
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-//require_once ($_SERVER['DOCUMENT_ROOT'] . '/lib/avg.php');
-//require_once ($_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 function drawGraph($xData, $yData, $average, $interval, $title, $yAxisType='number')
 {

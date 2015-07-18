@@ -7,50 +7,127 @@
     </database-info>
     <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
     <schema name="" catalog="mpginfo"/>
-    <table name="mileage" schema="" catalog="mpginfo" type="TABLE">
-      <column name="rowid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+    <table name="login" schema="" catalog="mpginfo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="ip_address" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="session" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="create_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="login_ibfk_1" columns="user_id" ref-table="user" ref-schema="" ref-catalog="mpginfo" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <index name="userId" unique="false" columns="user_id"/>
+    </table>
+    <table name="refueling" schema="" catalog="mpginfo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="vehicle_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
-      <column name="miles" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
-      <column name="gallons" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
-      <column name="mpg" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
-      <column name="priceGallon" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
-      <column name="totalPrice" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
-      <column name="vehicle" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="miles" sqlType="DECIMAL" precision="10" scale="1" nullable="false" jdbcType="3"/>
+      <column name="gallons" sqlType="DECIMAL" precision="10" scale="3" nullable="false" jdbcType="3"/>
+      <column name="price_gallon" sqlType="DECIMAL" precision="10" scale="3" nullable="false" jdbcType="3"/>
       <column name="comment" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="last_upd_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
-      <primary-key name="PRIMARY" columns="rowid"/>
+      <column name="create_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="update_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="refueling_ibfk_1" columns="vehicle_id" ref-table="vehicle" ref-schema="" ref-catalog="mpginfo" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <index name="vehicleId" unique="false" columns="vehicle_id"/>
     </table>
-    <table name="servicelogs" schema="" catalog="mpginfo" type="TABLE">
-      <column name="placeholder" sqlType="VARCHAR" precision="1" scale="0" nullable="false" jdbcType="12"/>
+    <table name="refueling_sum" schema="" catalog="mpginfo" type="VIEW">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="vehicle_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="miles" sqlType="DECIMAL" precision="10" scale="1" nullable="false" jdbcType="3"/>
+      <column name="gallons" sqlType="DECIMAL" precision="10" scale="3" nullable="false" jdbcType="3"/>
+      <column name="price_gallon" sqlType="DECIMAL" precision="10" scale="3" nullable="false" jdbcType="3"/>
+      <column name="comment" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="create_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="update_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="price" sqlType="DECIMAL" precision="17" scale="2" nullable="false" jdbcType="3" def="MC4wMA=="/>
     </table>
-    <table name="users" schema="" catalog="mpginfo" type="TABLE">
-      <column name="userNo" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    <table name="service" schema="" catalog="mpginfo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="vehicle_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="cost" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="document" sqlType="MEDIUMBLOB" precision="16777215" scale="0" nullable="true" jdbcType="-4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="service_ibfk_1" columns="vehicle_id" ref-table="vehicle" ref-schema="" ref-catalog="mpginfo" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <exported-key name="service_line_item_ibfk_1" table="service_line_item" schema="" catalog="mpginfo" columns="service_id"/>
+      <index name="vehicleId" unique="false" columns="vehicle_id"/>
+    </table>
+    <table name="service_line_item" schema="" catalog="mpginfo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="service_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="cost" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="description" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="service_line_item_ibfk_1" columns="service_id" ref-table="service" ref-schema="" ref-catalog="mpginfo" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <index name="serviceId" unique="false" columns="service_id"/>
+    </table>
+    <table name="trip" schema="" catalog="mpginfo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="vehicle_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="comment" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="create_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="update_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="trip_ibfk_1" columns="vehicle_id" ref-table="vehicle" ref-schema="" ref-catalog="mpginfo" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <exported-key name="trip_detail_ibfk_1" table="trip_detail" schema="" catalog="mpginfo" columns="trip_id"/>
+      <index name="vehicleId" unique="false" columns="vehicle_id"/>
+    </table>
+    <table name="trip_detail" schema="" catalog="mpginfo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="trip_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="sequence" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="device_time" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" remarks="bG9jYWwgZGV2aWNlIHRpbWUgYXMgcmVwb3J0ZWQgYnkgVG9ycXVlIGFwcA=="/>
+      <column name="lon" sqlType="DECIMAL" precision="10" scale="6" nullable="false" jdbcType="3"/>
+      <column name="lat" sqlType="DECIMAL" precision="10" scale="6" nullable="false" jdbcType="3"/>
+      <column name="speed" sqlType="DECIMAL" precision="10" scale="6" nullable="false" jdbcType="3" remarks="bS9z"/>
+      <column name="mpg" sqlType="DECIMAL" precision="10" scale="6" nullable="false" jdbcType="3" def="MC4wMDAwMDA="/>
+      <column name="avg_mpg" sqlType="DECIMAL" precision="10" scale="6" nullable="false" jdbcType="3" def="MC4wMDAwMDA="/>
+      <column name="distance" sqlType="DECIMAL" precision="10" scale="6" nullable="false" jdbcType="3" def="MC4wMDAwMDA=" remarks="aW4gbWlsZXM="/>
+      <column name="fuel_used" sqlType="DECIMAL" precision="10" scale="6" nullable="false" jdbcType="3" def="MC4wMDAwMDA=" remarks="aW4gZ2FsbG9ucw=="/>
+      <column name="trip_time" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" remarks="aW4gc2Vjb25kcw=="/>
+      <column name="stopped_time" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" remarks="aW4gc2Vjb25kcw=="/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="trip_detail_ibfk_1" columns="trip_id" ref-table="trip" ref-schema="" ref-catalog="mpginfo" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <index name="tripId" unique="false" columns="trip_id"/>
+    </table>
+    <table name="user" schema="" catalog="mpginfo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="username" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="password" sqlType="CHAR" precision="40" scale="0" nullable="false" jdbcType="1"/>
-      <column name="lastLoginDT" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
-      <column name="joinDT" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
-      <column name="session" sqlType="CHAR" precision="40" scale="0" nullable="true" jdbcType="1"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="create_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="update_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="login_ibfk_1" table="login" schema="" catalog="mpginfo" columns="user_id"/>
+      <exported-key name="vehicle_ibfk_1" table="vehicle" schema="" catalog="mpginfo" columns="user_id"/>
       <index name="username" unique="true" columns="username"/>
     </table>
-    <table name="vehicles" schema="" catalog="mpginfo" type="TABLE">
-      <column name="model_year" sqlType="YEAR" precision="0" scale="0" nullable="false" jdbcType="91"/>
+    <table name="vehicle" schema="" catalog="mpginfo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="b_default" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MA=="/>
+      <column name="model_year" sqlType="SMALLINT" precision="5" scale="0" nullable="false" jdbcType="5"/>
       <column name="make" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="model" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
       <column name="trim" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="color" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="date_purchased" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
-      <column name="date_sold" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
-      <column name="mileage_current" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
-      <column name="mileage_purchased" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
-      <column name="mileage_sold" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
-      <column name="price_purchased" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
-      <column name="price_sold" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
-      <column name="vehicle_index" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="updateDS" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
-      <column name="createDS" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
-      <column name="default_vehicle" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MA=="/>
-      <column name="username" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <primary-key name="PRIMARY" columns="vehicle_index"/>
+      <column name="vin" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
+      <column name="purchase_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="sold_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="current_miles" sqlType="DECIMAL" precision="10" scale="1" nullable="true" jdbcType="3"/>
+      <column name="original_miles" sqlType="DECIMAL" precision="10" scale="1" nullable="true" jdbcType="3"/>
+      <column name="final_miles" sqlType="DECIMAL" precision="10" scale="1" nullable="true" jdbcType="3"/>
+      <column name="purchase_price" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
+      <column name="sell_price" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
+      <column name="create_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="update_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="vehicle_ibfk_1" columns="user_id" ref-table="user" ref-schema="" ref-catalog="mpginfo" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <exported-key name="refueling_ibfk_1" table="refueling" schema="" catalog="mpginfo" columns="vehicle_id"/>
+      <exported-key name="service_ibfk_1" table="service" schema="" catalog="mpginfo" columns="vehicle_id"/>
+      <exported-key name="trip_ibfk_1" table="trip" schema="" catalog="mpginfo" columns="vehicle_id"/>
+      <index name="userId" unique="false" columns="user_id"/>
     </table>
   </data-source>
 </component>

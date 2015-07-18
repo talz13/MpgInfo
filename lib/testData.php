@@ -1,9 +1,10 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MpgDb.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
 
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+
+startMpgSession();
 
 $g = filter_input(INPUT_POST, 'g');
 if (!isset($g)) {
@@ -54,7 +55,7 @@ function getData($dataToRetrieve, $debug) {
 function getAllData() {
 //    $mysqli = getConn();
     $db = new MpgDb();
-    $query = "select date, miles, gallons, (miles / gallons) as mpg, priceGallon, (gallons * priceGallon) as totalPrice, comment from mileage order by date asc";
+    $query = "select date, miles, gallons, priceGallon, comment from refuelings order by date asc";
     $db->runQuery($query);
 
     $data = ['cols' => [['id' => strval(0),
@@ -93,9 +94,9 @@ function getAllData() {
                 ['v' => strtotime($row->date) * 1000, 'f' => $row->date],
                 ['v' => $row->miles],
                 ['v' => $row->gallons],
-                ['v' => $row->mpg],
+                ['v' => $row->miles / $row->gallons],
                 ['v' => $row->priceGallon],
-                ['v' => $row->totalPrice],
+                ['v' => $row->priceGallon * $row->gallons],
                 ['v' => $row->comment]]];
     }
     return $data;
