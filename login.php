@@ -1,6 +1,5 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 startMpgSession();
 

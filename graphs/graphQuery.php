@@ -1,5 +1,4 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/avg.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/graphs/mpgInfoGraph.php';

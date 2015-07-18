@@ -9,20 +9,23 @@ $minSizeY = 75;
 $defaultX = 800;
 $defaultY = 600;
 
-function getImgSize($inputArray) {
-	$xSize = $GLOBALS['defaultX'];
-	$ySize = $GLOBALS['defaultY'];
-	$fontRatio = $xSize / $GLOBALS['defaultX'];
-	if (array_key_exists('sizex', $_GET) && array_key_exists('sizey', $_GET))
-	{
-		$xSize = intval($_GET['sizex']);
-		$ySize = intval($_GET['sizey']);
-		if ($xSize > $GLOBALS['maxSizeX'] || $xSize < $GLOBALS['minSizeX'])
-			$xSize = $GLOBALS['defaultX'];
-		if ($ySize > $GLOBALS['maxSizeY'] || $ySize < $GLOBALS['minSizeY'])
-			$ySize = $GLOBALS['defaultY'];
-		$fontRatio = $xSize / $GLOBALS['defaultX'];
-	}
+function getImgSize() {
+    if ($xSize = filter_input(INPUT_GET, 'sizex', FILTER_VALIDATE_INT)) {
+        if ($xSize > Config::getXMax()) {
+            $xSize = Config::getXMax();
+        }
+    } else {
+        $xSize = Config::getXFull();
+    }
+    if ($ySize = filter_input(INPUT_GET, 'sizey', FILTER_VALIDATE_INT)) {
+        if ($ySize > Config::getYMax()) {
+            $ySize = Config::getYMax();
+        }
+    } else {
+        $ySize = Config::getYFull();
+    }
+    $fontRatio = $xSize / Config::getXFull();
+
     return array($xSize, $ySize, $fontRatio);
 }
 
@@ -44,10 +47,6 @@ function getUserId() {
 
 function setUserId($id) {
     $_SESSION['userId'] = $id;
-}
-
-function filterPost($key) {
-
 }
 
 function buildLocalPath($rootRelativePath) {

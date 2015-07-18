@@ -1,8 +1,12 @@
 <?php
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MyAutoLoader.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+
 class Config
 {
-    private static $siteName = "car info";
+    private static $siteName = "Car Info";
     private static $dbUser = "";
     private static $dbPass = "";
     private static $dbHost = "";
@@ -19,6 +23,16 @@ class Config
     private static $currencyFormatStr = '$%01.2f';
 
     private static $baseUrl = '';
+
+    public static function initDb($debug = false) {
+        ORM::configure(sprintf('mysql:host=%s;dbname=%s', Config::getDbHost(), Config::getDb()));
+        ORM::configure('username', Config::getDbUser());
+        ORM::configure('password', Config::getDbPass());
+
+        if ($debug) {
+            ORM::configure('logging', true);
+        }
+    }
 
     /**
      * @return string

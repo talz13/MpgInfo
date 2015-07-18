@@ -2,8 +2,6 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MpgDb.php';
 
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-
 startMpgSession();
 
 $g = filter_input(INPUT_POST, 'g');

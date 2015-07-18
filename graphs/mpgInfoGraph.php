@@ -7,15 +7,13 @@
  */
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 function drawGraph($xData, $yData, $average, $interval, $title, $yAxisType='number')
 {
     JpGraph\JpGraph::load();
     JpGraph\JpGraph::module('line');
 
-    // Get size from _GET:
-    $size = getImgSize($_GET);
+    $size = getImgSize();
 
     if ($size[0] > Config::getXMax()) {
         $size[0] = Config::getXMax();
