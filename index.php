@@ -10,4 +10,3 @@ include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
     <a href="graphs/graphQuery.php?graph=price"><?=sprintf('<img src="graphs/graphQuery.php?graph=price&sizex=%1$d&amp;sizey=%2$d" width="%1$d" height="%2$d" alt="Price per gallon">', Config::getXThumb(), Config::getYThumb())?></a>
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
-?>

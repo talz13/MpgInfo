@@ -115,4 +115,3 @@ if (checkLogin()) {
     }
 }
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
-?>
