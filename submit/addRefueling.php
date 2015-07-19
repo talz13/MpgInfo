@@ -1,6 +1,5 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MpgDb.php';
 
 startMpgSession();
 
@@ -9,16 +8,27 @@ Config::initDb();
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 
 if (checkLogin()) {
-    //    $mysqli = getConn();
     if (array_key_exists('submit', $_POST)) {
-        $refueling = Refueling::create();
-        $refueling->date = sprintf("%d-%d-%d", $_POST['year'], $_POST['month'], $_POST['day']);
-        $refueling->miles = $_POST['miles'];
-        $refueling->gallons = $_POST['gallons'];
-        $refueling->price_gallon = $_POST['priceGallon'];
-        $refueling->vehicle_id = $_POST['vehicle'];
-        $refueling->comment = $_POST['comment'];
-        $refueling->save();
+        $vehicle_id = filter_input(INPUT_POST, 'vehicle', FILTER_VALIDATE_INT);
+        if (checkVehicleId($vehicle_id)) {
+            $year = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);
+            $month = filter_input(INPUT_POST, 'month', FILTER_VALIDATE_INT);
+            $day = filter_input(INPUT_POST, 'day', FILTER_VALIDATE_INT);
+            if ($year && $month && $day && checkdate($month, $day, $year)) {
+                $date = date(sprintf("%d/%d/%d", $month, $day, $year));
+            } else {
+                $date = date('n/j/Y');
+            }
+            $refueling = Refueling::create();
+            $refueling->date = $date;
+            $refueling->miles = filter_input(INPUT_POST, 'miles', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $refueling->gallons = filter_input(INPUT_POST, 'gallons', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $refueling->price_gallon = filter_input(INPUT_POST, 'priceGallon', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $refueling->vehicle_id = $vehicle_id;
+            $refueling->comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH);
+            $refueling->save();
+        }
+        // TODO else display error, vehicle doesn't belong to user!
     }
     $vehicles = Vehicle::where('user_id', getUserId())->find_many();
     ?>

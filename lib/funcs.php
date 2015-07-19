@@ -1,6 +1,5 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MpgDb.php';
 
 $maxSizeX = 1920;
 $maxSizeY = 1080;
@@ -31,6 +30,14 @@ function getImgSize() {
 
 function checkLogin() {
     return isset($_SESSION['userId']) ? true : false;
+}
+
+function checkVehicleId($testId) {
+    if (Vehicle::where('user_id', getUserId())->where('id', $testId)->count('*') == 1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function displayLoginLink() {

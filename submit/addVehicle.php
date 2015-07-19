@@ -55,7 +55,7 @@ if (checkLogin()) {
             $vehicle->sell_price = round($price_sold, 2);
         }
 
-//        $vehicle->save();;
+        $vehicle->save();
     } else {
         ?>
         <form name="submitVehicle" action="addVehicle.php" method="POST">
