@@ -43,13 +43,13 @@ if (checkLogin()) {
             $vehicle->original_miles = round($miles_original, 1);
         }
         if ($miles_final = filter_input(INPUT_POST, 'mileage_sold', FILTER_VALIDATE_INT)) {
-            $vehicle->final_miles = $miles_final;
+            $vehicle->sold_miles = $miles_final;
         }
         if ($vin = filter_input(INPUT_POST, 'vin', FILTER_SANITIZE_STRING, $stringSanitizeFilters)) {
             $vehicle->vin = $vin;
         }
-        if ($price_purchased = filter_input(INPUT_POST, 'price_purchased', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) {
-            $vehicle->purchase_price = round($price_purchased, 2);
+        if ($purchase_price = filter_input(INPUT_POST, 'price_purchased', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) {
+            $vehicle->purchase_price = round($purchase_price, 2);
         }
         if ($price_sold = filter_input(INPUT_POST, 'price_sold', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) {
             $vehicle->sell_price = round($price_sold, 2);

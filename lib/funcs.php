@@ -40,6 +40,13 @@ function checkVehicleId($testId) {
     }
 }
 
+function clearDefaultVehicles($vehicleId) {
+    if (checkVehicleId($vehicleId)) {
+        Vehicle::where('user_id', getUserId())->where_not_equal('id', $vehicleId)->find_result_set()->set('b_default', 0)->save();
+//        Vehicle::where('id', $vehicleId)->find_one()->set('b_default', 1)->save();
+    }
+}
+
 function displayLoginLink() {
     printf('<table><tr><td><h2>Please <a href="%s">log in</a></h2></td></tr></table>', buildLocalPath('/login.php'));
 }

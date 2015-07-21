@@ -5,6 +5,7 @@
     "require": {
         "twig/twig": "1.*",
 	    "jpgraph/jpgraph": "dev-master",
-        "j4mie/paris": "v1.5.4"
+        "j4mie/paris": "v1.5.4",
+        "respect/validation": "0.9.3"
     }
 }

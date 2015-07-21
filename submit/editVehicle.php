@@ -1,5 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+use Respect\Validation\Validator as v;
+use Respect\Validation\Exceptions\NestedValidationExceptionInterface;
 
 startMpgSession();
 
@@ -8,103 +10,185 @@ Config::initDb();
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 
 if (checkLogin()) {
-    if (array_key_exists('submit', $_POST)) {
-        if (checkVehicleId($vehicle_id)) {
+    if (array_key_exists('vehicle_id', $_POST)) {
+        $vehicle_id = filter_input(INPUT_POST, 'vehicle_id', FILTER_VALIDATE_INT);
+    } else if (array_key_exists('vehicle_id', $_GET)) {
+        $vehicle_id = filter_input(INPUT_GET, 'vehicle_id', FILTER_VALIDATE_INT);
+    } else {
+        $vehicle_id = Vehicle::where('user_id', getUserId())->where('b_default', 1)->find_one()->id;
+    }
+    if (checkVehicleId($vehicle_id)) {
+        $vehicle = Vehicle::where('id', $vehicle_id)->find_one();
+        if (array_key_exists('submit', $_POST)) {
             $stringSanitizeFilters = FILTER_FLAG_ENCODE_LOW | FILTER_FLAG_ENCODE_HIGH;
 
-            $month_purchased = filter_input(INPUT_POST, 'month_purchased', FILTER_VALIDATE_INT);
-            $day_purchased = filter_input(INPUT_POST, 'day_purchased', FILTER_VALIDATE_INT);
-            $year_purchased = filter_input(INPUT_POST, 'year_purchased', FILTER_VALIDATE_INT);
-            if ($month_purchased && $day_purchased && $year_purchased && checkdate($month_purchased, $day_purchased, $year_purchased)) {
-                $date_purchased = date(sprintf("%d/%d/%d", $month_purchased, $day_purchased, $year_purchased));
-            }
-            $month_sold = filter_input(INPUT_POST, 'month_sold', FILTER_VALIDATE_INT);
-            $day_sold = filter_input(INPUT_POST, 'day_sold', FILTER_VALIDATE_INT);
-            $year_sold = filter_input(INPUT_POST, 'year_sold', FILTER_VALIDATE_INT);
-            if ($month_sold && $day_sold && $year_sold && checkdate($month_sold, $day_sold, $year_sold)) {
-                $date_sold = date(sprintf("%d/%d/%d", $month_sold, $day_sold, $year_sold));
-            }
+            try {
+                $dateValidator = v::notEmpty()->date();
+                $milesValidator = v::notEmpty()->positive()->float()->between(0, 99999999);
+                $yearValidator = v::notEmpty()->positive()->int()->between(1900, 3000);
+                $amountValidator = v::notEmpty()->positive()->float();
+                $stringValidator = v::notEmpty()->string();
+                $boolValidator = v::notEmpty()->bool();
 
-            $vehicle = Vehicle::where('id', $vehicle_id)->find_one();
-            $vehicle->user_id = getUserId();
-            $vehicle->model_year = filter_input(INPUT_POST, 'model_year', FILTER_VALIDATE_INT);
-            $vehicle->make = filter_input(INPUT_POST, 'make', FILTER_SANITIZE_STRING, $stringSanitizeFilters);
-            $vehicle->model = filter_input(INPUT_POST, 'model', FILTER_SANITIZE_STRING, $stringSanitizeFilters);
-            $vehicle->trim = filter_input(INPUT_POST, 'trim', FILTER_SANITIZE_STRING, $stringSanitizeFilters);
-            $vehicle->color = filter_input(INPUT_POST, 'color', FILTER_SANITIZE_STRING, $stringSanitizeFilters);
-            if (isset($date_purchased)) {
-                $vehicle->purchase_date = $date_purchased;
-            }
-            if (isset($date_sold)) {
-                $vehicle->sold_date = $date_sold;
-            }
-            if ($current_miles = filter_input(INPUT_POST, 'miles_current', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) {
-                $vehicle->current_miles = $current_miles;
-            }
-            if ($miles_original = filter_input(INPUT_POST, 'miles_original', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) {
-                $vehicle->original_miles = round($miles_original, 1);
-            }
-            if ($miles_final = filter_input(INPUT_POST, 'mileage_sold', FILTER_VALIDATE_INT)) {
-                $vehicle->final_miles = $miles_final;
-            }
-            if ($vin = filter_input(INPUT_POST, 'vin', FILTER_SANITIZE_STRING, $stringSanitizeFilters)) {
-                $vehicle->vin = $vin;
-            }
-            if ($price_purchased = filter_input(INPUT_POST, 'price_purchased', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) {
-                $vehicle->purchase_price = round($price_purchased, 2);
-            }
-            if ($price_sold = filter_input(INPUT_POST, 'price_sold', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) {
-                $vehicle->sell_price = round($price_sold, 2);
-            }
+                // Required fields:
+                if ($yearValidator->assert(filter_input(INPUT_POST, 'model_year'))) {
+                    $model_year = (int) filter_input(INPUT_POST, 'model_year');
+                }
+                if ($stringValidator->length(1, 50)->assert(filter_input(INPUT_POST, 'make'))) {
+                    $make = trim(filter_input(INPUT_POST, 'make'));
+                }
+                if ($stringValidator->length(1, 100)->assert(filter_input(INPUT_POST, 'model'))) {
+                    $model = trim(filter_input(INPUT_POST, 'model'));
+                }
+                if ($stringValidator->length(1, 50)->assert(filter_input(INPUT_POST, 'trim'))) {
+                    $trim = trim(filter_input(INPUT_POST, 'trim'));
+                }
+                if ($stringValidator->length(1, 50)->assert(filter_input(INPUT_POST, 'color'))) {
+                    $color = trim(filter_input(INPUT_POST, 'color'));
+                }
+                if ($boolValidator->assert(filter_input(INPUT_POST, 'b_default'))) {
+                    $b_default = (bool) filter_input(INPUT_POST, 'b_default');
+                }
 
-            $vehicle->save();
+                // Optional fields:
+                if ($stringValidator->length(0, 50)->validate(filter_input(INPUT_POST, 'vin'))) {
+                    $vin = trim(filter_input(INPUT_POST, 'vin'));
+                }
+                if ($dateValidator->validate(sprintf("%d-%d-%d", filter_input(INPUT_POST, 'buy_year'), filter_input(INPUT_POST, 'buy_month'), filter_input(INPUT_POST, 'buy_day')))) {
+                    $purchase_date = date(sprintf("%d-%d-%d", filter_input(INPUT_POST, 'buy_year'), filter_input(INPUT_POST, 'buy_month'), filter_input(INPUT_POST, 'buy_day')));
+                }
+                if ($dateValidator->validate(sprintf("%d-%d-%d", filter_input(INPUT_POST, 'sell_year'), filter_input(INPUT_POST, 'sell_month'), filter_input(INPUT_POST, 'sell_day')))) {
+                    $sold_date = date(sprintf("%d-%d-%d", filter_input(INPUT_POST, 'sell_year'), filter_input(INPUT_POST, 'sell_month'), filter_input(INPUT_POST, 'sell_day')));
+                }
+                if ($milesValidator->validate(filter_input(INPUT_POST, 'miles_current'))) {
+                    $current_miles = round(filter_input(INPUT_POST, 'miles_current', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION), 1);
+                }
+                if ($milesValidator->validate(filter_input(INPUT_POST, 'miles_original'))) {
+                    $original_miles = round(filter_input(INPUT_POST, 'miles_original', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION), 1);
+                }
+                if ($milesValidator->validate(filter_input(INPUT_POST, 'sold_miles'))) {
+                    $sold_miles = round(filter_input(INPUT_POST, 'sold_miles', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION), 1);
+                }
+                if ($amountValidator->validate(filter_input(INPUT_POST, 'price_purchased'))) {
+                    $purchased_price = round(filter_input(INPUT_POST, 'price_purchased', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION), 2);
+                }
+                if ($amountValidator->validate(filter_input(INPUT_POST, 'sell_price'))) {
+                    $sold_price = round(filter_input(INPUT_POST, 'sell_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION), 2);
+                }
+
+//                $vehicle = Vehicle::where('id', $vehicle_id)->find_one();
+                if (isset($model_year) && $vehicle->model_year != $model_year) {
+                    $vehicle->model_year = $model_year;
+                }
+                if (isset($make) && $vehicle->make != $make) {
+                    $vehicle->make = $make;
+                }
+                if (isset($model) && $vehicle->model != $model) {
+                    $vehicle->model = $model;
+                }
+                if (isset($trim) && $vehicle->trim != $trim) {
+                    $vehicle->trim = $trim;
+                }
+                if (isset($color) && $vehicle->color != $color) {
+                    $vehicle->color = $color;
+                }
+                if (isset($purchase_date) && strtotime($vehicle->purchase_date) != strtotime($purchase_date)) {
+                    $vehicle->purchase_date = $purchase_date;
+                }
+                if (isset($sold_date) && strtotime($vehicle->sold_date) != strtotime($sold_date)) {
+                    $vehicle->sold_date = $sold_date;
+                }
+                if (isset($current_miles) && $vehicle->current_miles != $current_miles) {
+                    $vehicle->current_miles = $current_miles;
+                }
+                if (isset($original_miles) && $vehicle->original_miles != $original_miles) {
+                    $vehicle->original_miles = $original_miles;
+                }
+                if (isset($sold_miles) && $vehicle->final_miles != $sold_miles) {
+                    $vehicle->sold_miles = $sold_miles;
+                }
+                if (isset($vin) && $vehicle->vin != $vin) {
+                    $vehicle->vin = $vin;
+                }
+                if (isset($purchased_price) && $vehicle->purchase_price != $purchased_price) {
+                    $vehicle->purchase_price = $purchase_price;
+                }
+                if (isset($sold_price) && $vehicle->sell_price != $sold_price) {
+                    $vehicle->sell_price = $sold_price;
+                }
+                if (isset($b_default) && $vehicle->b_default != $b_default && $b_default) {
+                    $vehicle->b_default = 1;
+                    clearDefaultVehicles($vehicle_id);
+                }
+                $vehicle->save();
+            } catch (NestedValidationExceptionInterface $exception) {
+
+            }
         }
-    } else {
         ?>
         <form name="submitVehicle" action="editVehicle.php" method="POST">
             <input type="hidden" name="submit" value="true">
+            <?php
+            if (isset($vehicle_id)) {
+                printf('<input type="hidden" name="vehicle_id" value="%d">', $vehicle_id);
+            }
+            ?>
             <table border='1'>
                 <tr>
-                    <td>Model Year *</td>
-                    <td><input type="text" name="model_year"></td>
+                    <td>Model Year</td>
+                    <td><input type="text" name="model_year" value="<?= $vehicle->model_year ?>"></td>
                 </tr>
                 <tr>
-                    <td>Make *</td>
-                    <td><input type="text" name="make"></td>
+                    <td>Make</td>
+                    <td><input type="text" name="make" value="<?= $vehicle->make ?>"></td>
                 </tr>
                 <tr>
-                    <td>Model *</td>
-                    <td><input type="text" name="model"></td>
+                    <td>Model</td>
+                    <td><input type="text" name="model" value="<?= $vehicle->model ?>"></td>
                 </tr>
                 <tr>
-                    <td>Trim *</td>
-                    <td><input type="text" name="trim"></td>
+                    <td>Trim</td>
+                    <td><input type="text" name="trim" value="<?= $vehicle->trim ?>"></td>
                 </tr>
                 <tr>
-                    <td>Color *</td>
-                    <td><input type="text" name="color"></td>
+                    <td>Color</td>
+                    <td><input type="text" name="color" value="<?= $vehicle->color ?>"></td>
                 </tr>
                 <tr>
                     <td>VIN</td>
-                    <td><input type="text" name="vin"></td>
+                    <td><input type="text" name="vin" value="<?= $vehicle->vin ?>"></td>
                 </tr>
                 <tr>
                     <td>Date Purchased</td>
-                    <td><input type="text" name="month_purchased" value="MM" maxlength="2">
-                        <input type="text" name="day_purchased" value="DD" maxlength="2">
-                        <input type="text" name="year_purchased" value="YYYY" maxlength="4"></td>
-                </tr>
-                <tr>
-                    <td>Current Mileage</td>
-                    <td><input type="text" name="miles_current"></td>
-                </tr>
-                <tr>
-                    <td>Miles at Purchase</td>
-                    <td><input type="text" name="miles_original"></td>
+                    <td><input type="text" name="buy_month" value="<?= explode('-', $vehicle->purchase_date)[1] ?>" maxlength="2" size="2">
+                        <input type="text" name="buy_day" value="<?= explode('-', $vehicle->purchase_date)[2] ?>" maxlength="2" size="2">
+                        <input type="text" name="buy_year" value="<?= explode('-', $vehicle->purchase_date)[0] ?>" maxlength="4" size="4"></td>
                 </tr>
                 <tr>
                     <td>Purchase Price</td>
-                    <td><input type="text" name="price_purchased"></td>
+                    <td><input type="text" name="price_purchased" value="<?= $vehicle->purchase_price ?>"></td>
+                </tr>
+                <tr>
+                    <td>Original Miles</td>
+                    <td><input type="text" name="miles_original" value="<?= $vehicle->original_miles ?>"></td>
+                </tr>
+                <tr>
+                    <td>Date Sold</td>
+                    <td><input type="text" name="sell_month" value="<?= is_null($vehicle->sold_date) ? 'MM' : explode('-', $vehicle->sold_date)[1] ?>" maxlength="2" size="2">
+                        <input type="text" name="sell_day" value="<?= is_null($vehicle->sold_date) ? 'DD' : explode('-', $vehicle->sold_date)[2] ?>" maxlength="2" size="2">
+                        <input type="text" name="sell_year" value="<?= is_null($vehicle->sold_date) ? 'YYYY' : explode('-', $vehicle->sold_date)[0] ?>" maxlength="4" size="4"></td>
+                </tr>
+                <tr>
+                    <td>Sell Price</td>
+                    <td><input type="text" name="sell_price" value="<?= $vehicle->sell_price ?>"></td>
+                </tr>
+                <tr>
+                    <td>Final Miles</td>
+                    <td><input type="text" name="sold_miles" value="<?= $vehicle->sold_miles ?>"></td>
+                </tr>
+                <tr>
+                    <td>Set as Default</td>
+                    <td><input type="checkbox" name="b_default" <?= $vehicle->b_default ? 'value="TRUE" CHECKED' : 'value="FALSE"' ?>></td>
                 </tr>
                 <tr>
                     <td><input type="submit" value="Submit"></td>
@@ -112,6 +196,10 @@ if (checkLogin()) {
             </table>
         </form>
     <?php
+    } else {
+
     }
+} else {
+    displayLoginLink();
 }
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
