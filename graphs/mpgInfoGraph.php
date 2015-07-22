@@ -6,7 +6,7 @@
  * Time: 3:54 PM
  */
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
 
 function drawGraph($xData, $yData, $average, $interval, $title, $yAxisType='number')
 {

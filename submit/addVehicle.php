@@ -1,11 +1,11 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
 
 startMpgSession();
 
 Config::initDb();
 
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/header.php';
 if (checkLogin()) {
     if (array_key_exists('submit', $_POST)) {
         $stringSanitizeFilters = FILTER_FLAG_ENCODE_LOW | FILTER_FLAG_ENCODE_HIGH;
@@ -111,4 +111,4 @@ if (checkLogin()) {
     <?php
     }
 }
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/footer.php';

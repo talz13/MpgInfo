@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
 
 startMpgSession();
 
@@ -7,7 +7,7 @@ Config::initDb();
 
 $pageName = "view results";
 //array_push($styles, "tablescroll.css");
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/header.php';
 
 if (checkLogin()) {
     if (array_key_exists('vehicle_id', $_POST)) {
@@ -70,4 +70,4 @@ if (checkLogin()) {
     displayLoginLink();
 }
 
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/footer.php';

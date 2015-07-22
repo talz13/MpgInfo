@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
 
 $maxSizeX = 1920;
 $maxSizeY = 1080;
@@ -84,7 +84,7 @@ function buildLocalPath($rootRelativePath) {
         $rootRelativePath = substr($rootRelativePath, 1, strlen($rootRelativePath) - 1);
     }
     if(isset($_SERVER['HTTPS'])) {
-        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+        $protocol = (filter_input(INPUT_SERVER, 'HTTPS') && filter_input(INPUT_SERVER, 'HTTPS') != "off") ? "https" : "http";
     }
     else {
         $protocol = 'http';

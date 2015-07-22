@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
 
 startMpgSession();
 
@@ -55,6 +55,6 @@ if (!checkLogin()) {
 
 }
 
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/header.php';
 echo $body;
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/footer.php';

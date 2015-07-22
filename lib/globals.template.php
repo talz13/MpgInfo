@@ -1,8 +1,8 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/MyAutoLoader.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/funcs.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/MyAutoLoader.php';
+require filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/vendor/autoload.php';
 
 class Config
 {

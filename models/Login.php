@@ -7,7 +7,7 @@
  * Time: 1:27 PM
  */
 
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+require filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/vendor/autoload.php';
 
 class Login extends Model{
     public function user() {

@@ -1,7 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/avg.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/graphs/mpgInfoGraph.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/avg.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/graphs/mpgInfoGraph.php';
 
 startMpgSession();
 

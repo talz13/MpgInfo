@@ -2,8 +2,8 @@
 ob_start();
 
 $siteRoot = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT');
-require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/funcs.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/vendor/autoload.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/funcs.php';
 
 $testRoot = buildLocalPath('/testing');
 $loader = new Twig_Loader_Filesystem($siteRoot . '/testing/twigs');

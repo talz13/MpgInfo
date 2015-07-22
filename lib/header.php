@@ -1,7 +1,7 @@
 <?php
 //ob_start('ob_tidyhandler');
 //ob_start("ob_tidyhandler");
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
 startMpgSession();
 $css = buildLocalPath('/styles/newcss.css');
 

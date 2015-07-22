@@ -1,9 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
 
 startMpgSession();
 
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/header.php';
 
 if (checkLogin())
 {
@@ -15,4 +15,4 @@ if (checkLogin())
 	mysql_select_db($db, $con);
 
 }
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/footer.php';

@@ -12,7 +12,7 @@ spl_autoload_register('MyAutoLoader::ModelLoader');
 class MyAutoLoader {
 
     public static function ModelLoader($className) {
-        $path = $_SERVER['DOCUMENT_ROOT'] . '/models/';
+        $path = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/models/';
          include $path.$className.'.php';
     }
 }

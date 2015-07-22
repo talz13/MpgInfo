@@ -1,6 +1,6 @@
 <?php
 // Special values for this page:
-require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/globals.php';
+require_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/globals.php';
 
 startMpgSession();
 
@@ -8,7 +8,7 @@ Config::initDb();
 
 $pageName = "view results";
 
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/header.php';
 
 // Columns array:
 $tableColumns = array();
@@ -76,4 +76,4 @@ if ($records) {
 } else {
     echo 'No rows!';
 }
-include $_SERVER['DOCUMENT_ROOT'] . '/lib/footer.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/lib/footer.php';

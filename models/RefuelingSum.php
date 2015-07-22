@@ -6,7 +6,7 @@
  * Time: 1:21 PM
  */
 
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+require filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/vendor/autoload.php';
 
 class RefuelingSum extends Model {
     public function vehicle() {
