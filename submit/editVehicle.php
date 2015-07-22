@@ -20,8 +20,6 @@ if (checkLogin()) {
     if (checkVehicleId($vehicle_id)) {
         $vehicle = Vehicle::where('id', $vehicle_id)->find_one();
         if (array_key_exists('submit', $_POST)) {
-            $stringSanitizeFilters = FILTER_FLAG_ENCODE_LOW | FILTER_FLAG_ENCODE_HIGH;
-
             try {
                 $dateValidator = v::notEmpty()->date();
                 $milesValidator = v::notEmpty()->positive()->float()->between(0, 99999999);

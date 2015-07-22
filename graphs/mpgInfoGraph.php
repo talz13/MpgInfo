@@ -44,7 +44,7 @@ function drawGraph($xData, $yData, $average, $interval, $title, $yAxisType='numb
     $graph->yaxis->scale->SetAutoMin(0);
 
     // Filled grid:
-    $graph->ygrid->SetFill(true, Config::getGraphBackgroundColors()[0], Config::getGraphBackgroundColors()[0]);
+    $graph->ygrid->SetFill(true, Config::getGraphBgColors()[0], Config::getGraphBgColors()[1]);
 
     // X gridlines:
     $graph->xgrid->Show(true);

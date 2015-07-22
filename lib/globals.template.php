@@ -10,7 +10,7 @@ class Config
     private static $dbUser = "";
     private static $dbPass = "";
     private static $dbHost = "";
-    private static $db = "";
+    private static $dbName = "";
 
     private static $xMax = 1024;
     private static $yMax = 1024;
@@ -18,14 +18,14 @@ class Config
     private static $yThumb = 240;
     private static $xFull = 800;
     private static $yFull = 600;
-    private static $graphBackgroundColors = ['#EFEFEF@0.5', '#BBCCFF@0.5']; // Alternating colors for graph background
+    private static $graphBgColors = ['#EFEFEF@0.5', '#BBCCFF@0.5']; // Alternating colors for graph background
 
     private static $currencyFormatStr = '$%01.2f';
 
     private static $baseUrl = '';
 
     public static function initDb($debug = false) {
-        ORM::configure(sprintf('mysql:host=%s;dbname=%s', Config::getDbHost(), Config::getDb()));
+        ORM::configure(sprintf('mysql:host=%s;dbname=%s', Config::getDbHost(), Config::getDbName()));
         ORM::configure('username', Config::getDbUser());
         ORM::configure('password', Config::getDbPass());
 
@@ -69,9 +69,9 @@ class Config
     /**
      * @return string
      */
-    public static function getDb()
+    public static function getDbName()
     {
-        return self::$db;
+        return self::$dbName;
     }
 
     /**
@@ -133,9 +133,9 @@ class Config
     /**
      * @return array
      */
-    public static function getGraphBackgroundColors()
+    public static function getGraphBgColors()
     {
-        return self::$graphBackgroundColors;
+        return self::$graphBgColors;
     }
 
     /**

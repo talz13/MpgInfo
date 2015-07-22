@@ -22,7 +22,7 @@ class MpgDb {
 
     private function getConn()
     {
-        $mysqli = new mysqli(Config::getDbHost(), Config::getDbUser(), Config::getDbPass(), Config::getDb());
+        $mysqli = new mysqli(Config::getDbHost(), Config::getDbUser(), Config::getDbPass(), Config::getDbName());
         if (mysqli_connect_errno()) {
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
