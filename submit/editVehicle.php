@@ -46,11 +46,7 @@ if (checkLogin()) {
                 if ($stringValidator->length(1, 50)->assert(filter_input(INPUT_POST, 'color'))) {
                     $color = trim(filter_input(INPUT_POST, 'color'));
                 }
-                // TODO: Fix this usage of Validator to handle true / false strings:
-//                if ($boolValidator->assert(filter_input(INPUT_POST, 'b_default', FILTER_VALIDATE_BOOLEAN))) {
-//                    $b_default = (bool) filter_input(INPUT_POST, 'b_default');
-//                }
-                if (strtolower(filter_input(INPUT_POST, 'b_default')) == 'on') {
+                if (v::true()->validate(filter_input(INPUT_POST, 'b_default'))) {
                     $b_default = true;
                 } else {
                     $b_default = false;
