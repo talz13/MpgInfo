@@ -47,6 +47,22 @@ function clearDefaultVehicles($vehicleId) {
     }
 }
 
+function getDefaultVehicle() {
+    return Vehicle::where('user_id', getUserId())->where('b_default', 1)->find_one();
+}
+function getListOfVehicles() {
+    return Vehicle::where('user_id', getUserId())->order_by_desc('b_default')->order_by_desc('purchase_date')->find_many();
+}
+
+function displayVehicleDropdown($action, $selectedId) {
+    $form = sprintf('<form name="changeVehicle" action="%s" method="POST"><table border="1"><tr><td>Select Vehicle</td><td><select onchange="this.form.submit()" name="vehicle_id">', $action);
+    foreach(getListOfVehicles() as $vehicleListItem) {
+        $form .= sprintf('<option value="%d"%s>%s %s %s</option>', $vehicleListItem->id, $vehicleListItem->id == $selectedId ? ' SELECTED' : '', $vehicleListItem->model_year, $vehicleListItem->make, $vehicleListItem->model);
+    }
+    $form .= '</select></td><td><input type="submit"</td></tr></table></form>';
+    echo $form;
+}
+
 function displayLoginLink() {
     printf('<table><tr><td><h2>Please <a href="%s">log in</a></h2></td></tr></table>', buildLocalPath('/login.php'));
 }

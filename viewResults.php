@@ -51,7 +51,6 @@ $records = Vehicle::select_many_expr(array('car_name' => "concat(v.model_year, '
                     ->join('refueling', 'v.id = r.vehicle_id', 'r')
                     ->$sortDir($sortBy)
                     ->find_many();
-echo ORM::get_last_query();
 $displayValFormat = "<tr><td>%s</td><td>%s</td><td>%01.1f</td><td align=\"right\">%01.3f</td><td>%01.2f</td><td>\$%01.3f</td><td align=\"right\">\$%01.2f</td><td>%s</td></tr>";
 
 if ($records) {

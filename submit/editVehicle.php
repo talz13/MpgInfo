@@ -46,19 +46,25 @@ if (checkLogin()) {
                 if ($stringValidator->length(1, 50)->assert(filter_input(INPUT_POST, 'color'))) {
                     $color = trim(filter_input(INPUT_POST, 'color'));
                 }
-                if ($boolValidator->assert(filter_input(INPUT_POST, 'b_default'))) {
-                    $b_default = (bool) filter_input(INPUT_POST, 'b_default');
+                // TODO: Fix this usage of Validator to handle true / false strings:
+//                if ($boolValidator->assert(filter_input(INPUT_POST, 'b_default', FILTER_VALIDATE_BOOLEAN))) {
+//                    $b_default = (bool) filter_input(INPUT_POST, 'b_default');
+//                }
+                if (strtolower(filter_input(INPUT_POST, 'b_default')) == 'on') {
+                    $b_default = true;
+                } else {
+                    $b_default = false;
                 }
 
                 // Optional fields:
                 if ($stringValidator->length(0, 50)->validate(filter_input(INPUT_POST, 'vin'))) {
                     $vin = trim(filter_input(INPUT_POST, 'vin'));
                 }
-                if ($dateValidator->validate(sprintf("%d-%d-%d", filter_input(INPUT_POST, 'buy_year'), filter_input(INPUT_POST, 'buy_month'), filter_input(INPUT_POST, 'buy_day')))) {
-                    $purchase_date = date(sprintf("%d-%d-%d", filter_input(INPUT_POST, 'buy_year'), filter_input(INPUT_POST, 'buy_month'), filter_input(INPUT_POST, 'buy_day')));
+                if ($yearValidator->validate(filter_input(INPUT_POST, 'buy_year')) && $dateValidator->validate(sprintf("%s-%s-%s", filter_input(INPUT_POST, 'buy_year'), filter_input(INPUT_POST, 'buy_month'), filter_input(INPUT_POST, 'buy_day')))) {
+                    $purchase_date = date(sprintf("%s-%s-%s", filter_input(INPUT_POST, 'buy_year'), filter_input(INPUT_POST, 'buy_month'), filter_input(INPUT_POST, 'buy_day')));
                 }
-                if ($dateValidator->validate(sprintf("%d-%d-%d", filter_input(INPUT_POST, 'sell_year'), filter_input(INPUT_POST, 'sell_month'), filter_input(INPUT_POST, 'sell_day')))) {
-                    $sold_date = date(sprintf("%d-%d-%d", filter_input(INPUT_POST, 'sell_year'), filter_input(INPUT_POST, 'sell_month'), filter_input(INPUT_POST, 'sell_day')));
+                if ($yearValidator->validate(filter_input(INPUT_POST, 'sell_year')) && $dateValidator->validate(sprintf("%s-%s-%s", filter_input(INPUT_POST, 'sell_year'), filter_input(INPUT_POST, 'sell_month'), filter_input(INPUT_POST, 'sell_day')))) {
+                    $sold_date = date(sprintf("%s-%s-%s", filter_input(INPUT_POST, 'sell_year'), filter_input(INPUT_POST, 'sell_month'), filter_input(INPUT_POST, 'sell_day')));
                 }
                 if ($milesValidator->validate(filter_input(INPUT_POST, 'miles_current'))) {
                     $current_miles = round(filter_input(INPUT_POST, 'miles_current', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION), 1);
@@ -104,7 +110,7 @@ if (checkLogin()) {
                 if (isset($original_miles) && $vehicle->original_miles != $original_miles) {
                     $vehicle->original_miles = $original_miles;
                 }
-                if (isset($sold_miles) && $vehicle->final_miles != $sold_miles) {
+                if (isset($sold_miles) && $vehicle->sold_miles != $sold_miles) {
                     $vehicle->sold_miles = $sold_miles;
                 }
                 if (isset($vin) && $vehicle->vin != $vin) {
@@ -125,6 +131,7 @@ if (checkLogin()) {
 
             }
         }
+        displayVehicleDropdown('editVehicle.php', $vehicle_id);
         ?>
         <form name="submitVehicle" action="editVehicle.php" method="POST">
             <input type="hidden" name="submit" value="true">
@@ -188,7 +195,7 @@ if (checkLogin()) {
                 </tr>
                 <tr>
                     <td>Set as Default</td>
-                    <td><input type="checkbox" name="b_default" <?= $vehicle->b_default ? 'value="TRUE" CHECKED' : 'value="FALSE"' ?>></td>
+                    <td><input type="checkbox" name="b_default"<?= $vehicle->b_default ? ' CHECKED DISABLED' : '' ?>></td>
                 </tr>
                 <tr>
                     <td><input type="submit" value="Submit"></td>

@@ -10,22 +10,16 @@ $pageName = "view results";
 include $_SERVER['DOCUMENT_ROOT'] . '/lib/header.php';
 
 if (checkLogin()) {
-    $vehicle_id = -1;
-    $vehicleValidated = false;
-
-// TODO: check if $_{GET/POST}['vehicle_id'] belongs to current user!
-    $vehicle_id = filter_input(INPUT_POST, 'vehicle_id', FILTER_VALIDATE_INT);
-    if (is_null($vehicle_id)) {
+    if (array_key_exists('vehicle_id', $_POST)) {
+        $vehicle_id = filter_input(INPUT_POST, 'vehicle_id', FILTER_VALIDATE_INT);
+    } else if (array_key_exists('vehicle_id', $_GET)) {
         $vehicle_id = filter_input(INPUT_GET, 'vehicle_id', FILTER_VALIDATE_INT);
-    }
-    $vehicles = Vehicle::where('user_id', getUserId());
-    if (!is_null($vehicle_id)) {
-        $vehicle = $vehicles->where('id', $vehicle_id)->find_one();
     } else {
-        $vehicle = $vehicles->where('b_default', 1)->find_one();
+        $vehicle_id = getDefaultVehicle()->id;
     }
-
-    if ($vehicle) {
+    if (checkVehicleId($vehicle_id)) {
+        $vehicle = Vehicle::where_id_is($vehicle_id)->find_one();
+        displayVehicleDropdown('viewVehicle.php', $vehicle_id);
         $table = '';
         $table .= '<table border="1" cellpadding="0" cellspacing="0">';
         $refuelingRecords = RefuelingSum::where('vehicle_id', $vehicle->id);

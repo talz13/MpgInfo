@@ -117,9 +117,9 @@
       <column name="sold_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="current_miles" sqlType="DECIMAL" precision="10" scale="1" nullable="true" jdbcType="3"/>
       <column name="original_miles" sqlType="DECIMAL" precision="10" scale="1" nullable="true" jdbcType="3"/>
-      <column name="final_miles" sqlType="DECIMAL" precision="10" scale="1" nullable="true" jdbcType="3"/>
-      <column name="purchase_price" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
-      <column name="sell_price" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
+      <column name="sold_miles" sqlType="DECIMAL" precision="10" scale="1" nullable="true" jdbcType="3"/>
+      <column name="purchase_price" sqlType="DECIMAL" precision="10" scale="2" nullable="true" jdbcType="3"/>
+      <column name="sell_price" sqlType="DECIMAL" precision="10" scale="2" nullable="true" jdbcType="3"/>
       <column name="create_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
       <column name="update_ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="id"/>
